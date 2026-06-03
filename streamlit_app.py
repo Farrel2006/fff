@@ -55,6 +55,16 @@ html, body, [class*="css"] {
     margin-bottom:35px;
 }
 
+.intro-box {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 40px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
 .result {
     background: rgba(255,255,255,0.12);
     backdrop-filter: blur(18px);
@@ -72,22 +82,24 @@ html, body, [class*="css"] {
     to { opacity:1; transform:translateY(0); }
 }
 
-.stButton>button {
-    width:100%;
-    padding:15px;
-    border-radius:18px;
-    font-weight:700;
-    font-size:16px;
-    border:none;
-    color:white;
-    background: linear-gradient(135deg, #7c3aed, #d946ef);
-    box-shadow:0 0 18px rgba(217, 70, 239, 0.5);
-    transition:all .3s ease;
+/* Memaksa semua jenis tombol berukuran lebar penuh yang seragam */
+.stButton>button, div[data-testid="stButton"]>button {
+    width: 100% !important;
+    display: block !important;
+    padding:15px !important;
+    border-radius:18px !important;
+    font-weight:700 !important;
+    font-size:16px !important;
+    border:none !important;
+    color:white !important;
+    background: linear-gradient(135deg, #7c3aed, #d946ef) !important;
+    box-shadow:0 0 18px rgba(217, 70, 239, 0.5) !important;
+    transition:all .3s ease !important;
 }
 
-.stButton>button:hover {
-    transform:translateY(-6px) scale(1.02);
-    box-shadow:0 0 30px rgba(217, 70, 239, 0.9);
+.stButton>button:hover, div[data-testid="stButton"]>button:hover {
+    transform:translateY(-6px) scale(1.02) !important;
+    box-shadow:0 0 30px rgba(217, 70, 239, 0.9) !important;
 }
 
 .stNumberInput input, .stTextInput input {
@@ -139,57 +151,21 @@ if "menu" not in st.session_state:
 
 menu_list = [
     "Hukum 1 Termodinamika", "Usaha", "Kalor", "Entalpi", "Hukum Hess",
-    "ΔH Reaksi", "Energi Gibbs", "Entropi", "Gas Ideal", "Gas Nyata"
-]
-
-# =====================================
-# HOME
-# =====================================
-if st.session_state.menu is None:
-    st.snow()
-    st.markdown("<div class='title'>🌌 ThermoVerse ⚗️</div>", unsafe_allow_html=True)
-    st.markdown("<div class='subtitle'>Kalkulator Termodinamika Universal — Cari Variabel Apa Saja</div>", unsafe_allow_html=True)
-
-    cols = st.columns(2)
-    for i, m in enumerate(menu_list):
-        with cols[i % 2]:
-            if st.button(f"⚡ {m}"):
-                st.session_state.menu = m
-                st.rerun()
-
-# =====================================
-# CALCULATOR PAGE
-# =====================================
-else:
-    menu = st.session_state.menu
-
-    if st.button("⬅️ Kembali"):
-        st.session_state.menu = None
-        st.rerun()
-
-    st.header(f"⚗️ {menu}")
-    st.divider()
-
-    # =====================================
-# UPDATE LIST MENU (Tambahkan di bagian atas bersama list lama)
-# =====================================
-menu_list = [
-    "Hukum 1 Termodinamika", "Usaha", "Kalor", "Entalpi", "Hukum Hess",
     "ΔH Reaksi", "Energi Gibbs", "Entropi", "Gas Ideal", "Gas Nyata",
     "Proses Isobarik", "Proses Isokhorik", "Proses Isotermal", "Edukasi Isotop Gas"
 ]
 
 # =====================================
-# HOME (Dengan Tampilan Pengantar, Tujuan & Kegunaan)
+# HOME & PENGANTAR
 # =====================================
 if st.session_state.menu is None:
     st.snow()
     st.markdown("<div class='title'>🌌 ThermoVerse ⚗️</div>", unsafe_allow_html=True)
     st.markdown("<div class='subtitle'>Kalkulator & Modul Edukasi Termodinamika Universal</div>", unsafe_allow_html=True)
 
-    # Box Pengantar Baru
+    # Box Pengantar Terintegrasi
     st.markdown("""
-    <div class='intro-box' style='background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 40px;'>
+    <div class='intro-box'>
         <h3 style='margin-top:0; color:#93c5fd;'>🎯 Selamat Datang di ThermoVerse!</h3>
         <p><b>ThermoVerse</b> adalah platform komputasi termodinamika interaktif yang dirancang untuk membantu mahasiswa, 
         akademisi, dan praktisi menyelesaikan analisis energi, gas, dan reaksi kimia secara presisi.</p>
@@ -202,17 +178,29 @@ if st.session_state.menu is None:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h3 style='text-align:center;'>Pilih Modul Perhitungan & Analisis:</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center; margin-bottom: 20px;'>Pilih Modul Perhitungan & Analisis:</h3>", unsafe_allow_html=True)
+    
     cols = st.columns(2)
     for i, m in enumerate(menu_list):
         with cols[i % 2]:
-            if st.button(f"⚡ {m}"):
+            if st.button(f"⚡ {m}", key=f"menu_btn_{i}"):
                 st.session_state.menu = m
                 st.rerun()
 
-    # -------------------------------------
+# =====================================
+# CALCULATOR PAGE
+# =====================================
+else:
+    menu = st.session_state.menu
+
+    if st.button("⬅️ Kembali ke Menu Utama"):
+        st.session_state.menu = None
+        st.rerun()
+
+    st.header(f"⚗️ {menu}")
+    st.divider()
+
     # 1. HUKUM 1 TERMODINAMIKA (ΔU = Q - W)
-    # -------------------------------------
     if menu == "Hukum 1 Termodinamika":
         st.latex(r"\Delta U = Q - W")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["ΔU (Perubahan Energi Dalam)", "Q (Kalor)", "W (Usaha)"])
@@ -235,9 +223,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
     # 2. USAHA (W = P * dV)
-    # -------------------------------------
     elif menu == "Usaha":
         st.latex(r"W = P \cdot \Delta V")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["W (Usaha)", "P (Tekanan)", "ΔV (Perubahan Volume)"])
@@ -260,9 +246,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
     # 3. KALOR (Q = m * c * dT)
-    # -------------------------------------
     elif menu == "Kalor":
         st.latex(r"Q = m \cdot c \cdot \Delta T")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["Q (Kalor)", "m (Massa)", "c (Kalor Jenis)", "ΔT (Perubahan Suhu)"])
@@ -289,9 +273,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
     # 4. ENTALPI (ΔH = ΔU + ΔnRT)
-    # -------------------------------------
     elif menu == "Entalpi":
         st.latex(r"\Delta H = \Delta U + \Delta n \cdot R \cdot T")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["ΔH (Entalpi)", "ΔU (Energi Dalam)", "Δn (Perubahan Mol)", "T (Suhu)"])
@@ -319,9 +301,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
-    # 5. HUKUM HESS (Mencari salah satu ΔH dari total)
-    # -------------------------------------
+    # 5. HUKUM HESS
     elif menu == "Hukum Hess":
         st.latex(r"\Delta H_{total} = \Delta H_1 + \Delta H_2 + ... + \Delta H_n")
         target = st.selectbox("Pilih operasi:", ["Hitung ΔH Total dari list", "Cari satu ΔH yang hilang"])
@@ -341,9 +321,7 @@ if st.session_state.menu is None:
                 st.balloons()
                 st.markdown(f"<div class='result'><h3>Hasil Variabel Hilang</h3>ΔH_x = ΔH_total - ΣΔH_diketahui <br> ΔH_x = {fmt(total_h)} - {fmt(sum(arr))} <br> ΔH_x = <b>{fmt(hasil)} kJ</b></div>", unsafe_allow_html=True)
 
-    # -------------------------------------
-    # 6. ΔH REAKSI (ΔH = ΣHf_produk - ΣHf_reaktan)
-    # -------------------------------------
+    # 6. ΔH REAKSI
     elif menu == "ΔH Reaksi":
         st.latex(r"\Delta H = \sum Hf_{produk} - \sum Hf_{reaktan}")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["ΔH Reaksi", "ΣHf Produk", "ΣHf Reaktan"])
@@ -369,9 +347,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
-    # 7. ENERGI GIBBS (ΔG = ΔH - T * dS)
-    # -------------------------------------
+    # 7. ENERGI GIBBS
     elif menu == "Energi Gibbs":
         st.latex(r"\Delta G = \Delta H - T \cdot \Delta S")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["ΔG (Energi Gibbs)", "ΔH (Entalpi)", "T (Suhu dalam K)", "ΔS (Entropi dalam kJ/K)"])
@@ -398,9 +374,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
-    # 8. ENTROPI (ΔS = Q / T)
-    # -------------------------------------
+    # 8. ENTROPI
     elif menu == "Entropi":
         st.latex(r"\Delta S = \frac{Q}{T}")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["ΔS (Entropi)", "Q (Kalor)", "T (Suhu)"])
@@ -423,9 +397,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
-    # 9. GAS IDEAL (PV = nRT)
-    # -------------------------------------
+    # 9. GAS IDEAL
     elif menu == "Gas Ideal":
         st.latex(r"P \cdot V = n \cdot R \cdot T")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["P (Tekanan)", "V (Volume)", "n (Jumlah Mol)", "T (Suhu)"])
@@ -453,9 +425,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
-    # 10. GAS NYATA (Van der Waals) -> Fokus mencari P atau T karena persamaannya linear untuk P dan T
-    # -------------------------------------
+     # 10. GAS NYATA (Sambungan / Sisa Logika Perhitungan)
     elif menu == "Gas Nyata":
         st.latex(r"\left(P + \frac{an^2}{V^2}\right)(V - nb) = nRT")
         target = st.selectbox("Pilih variabel yang ingin dicari:", ["P (Tekanan)", "T (Suhu)"])
@@ -472,22 +442,15 @@ if st.session_state.menu is None:
         if st.button("Hitung"):
             st.balloons()
             if "P" in target:
-                if (V - n * b) != 0 and V != 0:
-                    hasil = ((n * R * T) / (V - n * b)) - ((a * (n ** 2)) / (V ** 2))
-                else:
-                    hasil = 0
+                hasil = ((n * R * T) / (V - n * b)) - ((a * (n ** 2)) / (V ** 2)) if (V - n * b) != 0 and V != 0 else 0
                 langkah = f"P = [nRT / (V - nb)] - [an² / V²] <br> P = <b>{fmt(hasil)} atm</b>"
             else:
-                if n != 0 and (V - n * b) != 0:
-                    hasil = ((P + (a * (n**2) / (V**2))) * (V - n * b)) / (n * R)
-                else:
-                    hasil = 0
+                hasil = ((P + (a * (n**2) / (V**2))) * (V - n * b)) / (n * R) if n != 0 and (V - n * b) != 0 else 0
                 langkah = f"T = [(P + an²/V²)(V - nb)] / nR <br> T = <b>{fmt(hasil)} K</b>"
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian</h3>{langkah}</div>", unsafe_allow_html=True)
-    # -------------------------------------
+
     # 11. PROSES ISOBARIK (Tekanan Tetap)
-    # -------------------------------------
     elif menu == "Proses Isobarik":
         st.caption("Proses termodinamika pada Tekanan Konstan ($P = C$). Usaha: $W = P \\cdot \\Delta V$")
         st.latex(r"\frac{V_1}{T_1} = \frac{V_2}{T_2}")
@@ -515,9 +478,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian (Hukum Charles)</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
     # 12. PROSES ISOKHORIK (Volume Tetap)
-    # -------------------------------------
     elif menu == "Proses Isokhorik":
         st.caption("Proses termodinamika pada Volume Konstan ($V = C$). Usaha: $W = 0$, maka $\\Delta U = Q$")
         st.latex(r"\frac{P_1}{T_1} = \frac{P_2}{T_2}")
@@ -545,9 +506,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian (Hukum Gay-Lussac)</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
     # 13. PROSES ISOTERMAL (Suhu Tetap)
-    # -------------------------------------
     elif menu == "Proses Isotermal":
         st.caption("Proses termodinamika pada Suhu Konstan ($T = C$). Energi Dalam: $\\Delta U = 0$, maka $Q = W = nRT \\ln(V_2/V_1)$")
         st.latex(r"P_1 \cdot V_1 = P_2 \cdot V_2")
@@ -575,9 +534,7 @@ if st.session_state.menu is None:
             
             st.markdown(f"<div class='result'><h3>Langkah Penyelesaian (Hukum Boyle)</h3>{langkah}</div>", unsafe_allow_html=True)
 
-    # -------------------------------------
-    # 14. EDUKASI ISOTOP GAS (Hukum Graham)
-    # -------------------------------------
+    # 14. EDUKASI ISOTOP GAS
     elif menu == "Edukasi Isotop Gas":
         st.subheader("Simulasi Hukum Graham: Perbandingan Laju Efusi Isotop Gas")
         st.markdown("""
