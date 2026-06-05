@@ -160,7 +160,7 @@ menu_list = [
 # =====================================
 if st.session_state.menu is None:
     st.snow()
-    st.markdown("<div class='title'>🌌 ThermoVerse ⚗️</div>", unsafe_allow_html=True)
+    st.markdown("<div class='title'>🌌 ThermoCalculator ⚗️</div>", unsafe_allow_html=True)
     st.markdown("<div class='subtitle'>Kalkulator & Modul Edukasi Termodinamika Universal</div>", unsafe_allow_html=True)
 
     # Box Pengantar Terintegrasi
