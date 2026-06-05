@@ -167,7 +167,7 @@ if st.session_state.menu is None:
     st.markdown("""
     <div class='intro-box'>
         <h3 style='margin-top:0; color:#93c5fd;'>🎯 Selamat Datang di ThermoCalculator!</h3>
-        <p><b>ThermoVerse</b> adalah platform komputasi termodinamika interaktif yang dirancang untuk membantu mahasiswa, 
+        <p><b>ThermoCalculator</b> adalah platform komputasi termodinamika interaktif yang dirancang untuk membantu mahasiswa, 
         akademisi, dan praktisi menyelesaikan analisis energi, gas, dan reaksi kimia secara presisi.</p>
         <h4 style='color:#a78bfa;'>🚀 Tujuan & Kegunaan Aplikasi:</h4>
         <ul style='margin-bottom:0;'>
